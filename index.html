@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            margin: 20px;
+        }
+        
+        h1 {
+            color: #ff3366;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #ff6699;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            color: #d81b60;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .button {
+            padding: 18px 40px;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            min-width: 220px;
+        }
+        
+        .yes-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .yes-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .no-button {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .no-button:hover {
+            background-color: #d32f2f;
+            transform: scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Valentine page styling */
+        .valentine-page {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .valentine-page h1 {
+            color: #ff3366;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message {
+            color: #d81b60;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+        
+        .hearts {
+            font-size: 3rem;
+            color: #ff3366;
+            margin: 20px 0;
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Balloons styling */
+        .balloons-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 70px;
+            border-radius: 50%;
+            bottom: -100px;
+            animation: floatUp 15s linear infinite;
+        }
+        
+        .balloon:before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.7);
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .balloon:nth-child(1) { background-color: #ff3366; left: 10%; animation-delay: 0s; }
+        .balloon:nth-child(2) { background-color: #ff6699; left: 20%; animation-delay: 1s; }
+        .balloon:nth-child(3) { background-color: #ff9933; left: 30%; animation-delay: 3s; }
+        .balloon:nth-child(4) { background-color: #ffcc00; left: 40%; animation-delay: 2s; }
+        .balloon:nth-child(5) { background-color: #99cc33; left: 50%; animation-delay: 4s; }
+        .balloon:nth-child(6) { background-color: #33ccff; left: 60%; animation-delay: 1.5s; }
+        .balloon:nth-child(7) { background-color: #9966ff; left: 70%; animation-delay: 3.5s; }
+        .balloon:nth-child(8) { background-color: #ff66cc; left: 80%; animation-delay: 2.5s; }
+        .balloon:nth-child(9) { background-color: #ff3366; left: 90%; animation-delay: 0.5s; }
+        .balloon:nth-child(10) { background-color: #ff9933; left: 95%; animation-delay: 5s; }
+        
+        /* Animations */
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(0) rotate(0deg);
+                bottom: -100px;
+            }
+            100% { 
+                transform: translateY(-100vh) rotate(20deg);
+                bottom: 100vh;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes moveAround {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(100px, -50px); }
+            50% { transform: translate(-80px, 30px); }
+            75% { transform: translate(120px, 60px); }
+            100% { transform: translate(-100px, -30px); }
+        }
+        
+        .moving {
+            animation: moveAround 0.5s infinite alternate;
+            position: relative;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .question {
+                font-size: 1.8rem;
+            }
+            
+            .button {
+                padding: 15px 30px;
+                font-size: 1.5rem;
+                min-width: 180px;
+            }
+            
+            .valentine-page h1 {
+                font-size: 2.5rem;
+            }
+            
+            .message {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .button {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Balloons for the valentine page -->
+    <div class="balloons-container"></div>
+    
+    <!-- Main page -->
+    <div class="container" id="mainPage">
+        <h1>💘 Valentine's Day 💘</h1>
+        <h2>Will you be my Valentine?</h2>
+        
+        <div class="question">Will you go on a date with me?</div>
+        
+        <div class="buttons-container">
+            <button class="button yes-button" id="yesButton">YES</button>
+            <button class="button no-button" id="noButton">FUCK NO</button>
+        </div>
+        
+        <div class="footer">
+            <p>Choose wisely! One button leads to happiness, the other... to ragebait!</p>
+        </div>
+    </div>
+    
+    <!-- Valentine page (hidden by default) -->
+    <div class="container valentine-page" id="valentinePage">
+        <div class="hearts">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+        
+        <h1>Happy Valentine's Day!</h1>
+        
+        <div class="message">LESSGOOO, I LOVE YOU SO MUCH BABE!</div>
+        
+        <div class="hearts">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+        
+        <div class="footer">
+            <p>You made the right choice! ❤️ Happy Valentine's Day!</p>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let noButtonClicks = 0;
+        const noButtonTexts = [
+            "FUCK NO",
+            "BABE PLEASE",
+            "DUMMA FELLOW",
+            "SO YOU WON'T LISTEN UH",
+            "LEMME RAGEBAIT YOUR ASS"
+        ];
+        
+        // DOM Elements
+        const mainPage = document.getElementById('mainPage');
+        const valentinePage = document.getElementById('valentinePage');
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const balloonsContainer = document.querySelector('.balloons-container');
+        
+        // Generate balloons for the valentine page
+        function generateBalloons() {
+            for (let i = 1; i <= 10; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloonsContainer.appendChild(balloon);
+            }
+        }
+        
+        // Initialize balloons
+        generateBalloons();
+        
+        // Yes button click handler
+        yesButton.addEventListener('click', function() {
+            mainPage.style.display = 'none';
+            valentinePage.style.display = 'block';
+            
+            // Generate more balloons for celebration
+            for (let i = 1; i <= 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = `${Math.random() * 100}%`;
+                balloon.style.animationDelay = `${Math.random() * 5}s`;
+                balloonsContainer.appendChild(balloon);
+            }
+        });
+        
+        // No button click handler
+        noButton.addEventListener('click', function() {
+            if (noButtonClicks < 4) {
+                // Change button text based on click count
+                noButtonClicks++;
+                noButton.textContent = noButtonTexts[noButtonClicks];
+                
+                // Make button slightly larger each time
+                noButton.style.transform = `scale(${1 + (noButtonClicks * 0.05)})`;
+                
+                // On the 4th click (when text is "LEMME RAGEBAIT YOUR ASS")
+                if (noButtonClicks === 4) {
+                    // Add moving effect on the next click
+                    setTimeout(() => {
+                        noButton.classList.add('moving');
+                        noButton.style.cursor = 'not-allowed';
+                        noButton.title = "You can't catch me!";
+                    }, 100);
+                }
+            }
+        });
+        
+        // Make the button move when trying to click on the last stage
+        noButton.addEventListener('mouseover', function() {
+            if (noButtonClicks >= 4) {
+                // Randomly move the button when hovering
+                const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+                
+                noButton.style.position = 'fixed';
+                noButton.style.left = `${x}px`;
+                noButton.style.top = `${y}px`;
+                noButton.style.transition = 'left 0.3s, top 0.3s';
+            }
+        });
+        
+        // Also move the button when trying to click it
+        noButton.addEventListener('mousedown', function(e) {
+            if (noButtonClicks >= 4) {
+                e.preventDefault();
+                
+                // Move button to random position on click attempt
+                const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+                
+                noButton.style.left = `${x}px`;
+                noButton.style.top = `${y}px`;
+            }
+        });
+        
+        // Prevent button from being clicked when in ragebait mode
+        noButton.addEventListener('click', function(e) {
+            if (noButtonClicks >= 4) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+    </script>
+</body>
+</html>
